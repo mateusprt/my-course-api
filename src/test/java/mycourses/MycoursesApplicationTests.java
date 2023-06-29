@@ -1,0 +1,13 @@
+package mycourses;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class MycoursesApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}

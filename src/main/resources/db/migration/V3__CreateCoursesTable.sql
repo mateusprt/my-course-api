@@ -1,0 +1,15 @@
+CREATE TABLE IF NOT EXISTS courses(
+	id INT NOT NULL AUTO_INCREMENT,
+	category_id INT NOT NULL,
+	user_id INT NOT NULL,
+	title VARCHAR(100) NOT NULL,
+	description TEXT,
+	duration INT,
+	cover_img VARCHAR(255),
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+	
+	PRIMARY KEY(id),
+	CONSTRAINT FK_category_courses FOREIGN KEY (category_id) REFERENCES categories (id),
+	CONSTRAINT FK_users_courses FOREIGN KEY (user_id) REFERENCES users (id)
+);
