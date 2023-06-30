@@ -4,8 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import javax.management.relation.Role;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import mycourses.enums.Role;
 
 @Entity
 @Table(name = "users")
