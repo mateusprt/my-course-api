@@ -7,6 +7,7 @@ import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import jakarta.validation.ConstraintViolationException;
 import mycourses.dtos.exceptions.ResponseExceptionDto;
+import mycourses.exceptions.BadConfirmationTokenException;
 import mycourses.exceptions.ResourceAlreadyExistsException;
 import mycourses.exceptions.ResourceNotFoundException;
 
@@ -42,18 +44,6 @@ public class GlobalErrorController {
 		return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
 	}
 	
-	@ExceptionHandler(ResourceAlreadyExistsException.class)
-	public ResponseEntity<ResponseExceptionDto> handleResourceAlreadyExistsExceptionExceptions(ResourceAlreadyExistsException ex, WebRequest request) {
-		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
-	
-	@ExceptionHandler(ResourceNotFoundException.class)
-	public ResponseEntity<ResponseExceptionDto> handleResourceNotFoundExceptionExceptions(ResourceNotFoundException ex, WebRequest request) {
-		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
-		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-	}
-	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ResponseExceptionDto> handleMethodArgumentTypeMismatchExceptionExceptions(MethodArgumentTypeMismatchException ex, WebRequest request) {
 		ResponseExceptionDto response = new ResponseExceptionDto(List.of("Request malformed"), request.getDescription(false));
@@ -65,4 +55,29 @@ public class GlobalErrorController {
 		ResponseExceptionDto response = new ResponseExceptionDto(List.of("Required request body is missing"), request.getDescription(false));
 		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ResponseExceptionDto> handleInvalidRequiredFieldExceptions(BadCredentialsException ex, WebRequest request) {
+		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ResourceAlreadyExistsException.class)
+	public ResponseEntity<ResponseExceptionDto> handleResourceAlreadyExistsExceptions(ResourceAlreadyExistsException ex, WebRequest request) {
+		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ResponseExceptionDto> handleResourceNotFoundExceptions(ResourceNotFoundException ex, WebRequest request) {
+		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(BadConfirmationTokenException.class)
+	public ResponseEntity<ResponseExceptionDto> handleBadConfirmationTokenExceptions(BadConfirmationTokenException ex, WebRequest request) {
+		ResponseExceptionDto response = new ResponseExceptionDto(List.of(ex.getMessage()), request.getDescription(false));
+		return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+	}
+	
 }
