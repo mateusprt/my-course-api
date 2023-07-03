@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
 import mycourses.dtos.auth.AuthDto;
 import mycourses.dtos.auth.AuthLoginDto;
 import mycourses.dtos.auth.AuthRegistrationDto;

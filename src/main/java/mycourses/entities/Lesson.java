@@ -3,6 +3,9 @@ package mycourses.entities;
 import java.util.Date;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,6 +17,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import mycourses.enums.MediaType;
 
 @Entity
@@ -29,9 +35,12 @@ public class Lesson {
 	private Course course;
 	
 	@Column
+	@NotEmpty(message = "name can't be blank")
 	private String name;
 	
 	@Column
+	@NotNull(message = "duration can't be blank")
+	@Min(value = 0L, message = "duration can't be a negative value")
 	private Long duration;
 	
 	@Column(name = "media_type")
@@ -42,9 +51,11 @@ public class Lesson {
 	private String mediaUrl;
 	
 	@Column(name = "created_at")
+	@CreationTimestamp
 	private Date createdAt;
 	
 	@Column(name = "updated_at")
+	@UpdateTimestamp
 	private Date updatedAt;
 
 	public Lesson() {

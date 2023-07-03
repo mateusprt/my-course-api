@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import mycourses.dtos.categories.CategoryDto;
 import mycourses.dtos.courses.CourseDto;
 import mycourses.dtos.courses.CreateOrUpdateCourseDto;
+import mycourses.dtos.lessons.CreateOrUpdateLessonDto;
+import mycourses.dtos.lessons.LessonDto;
 import mycourses.services.interfaces.CoursesServiceInterface;
+import mycourses.services.interfaces.LessonsServiceInterface;
 
 
 @RestController
@@ -27,6 +29,9 @@ public class CoursesController {
 	
 	@Autowired
 	private CoursesServiceInterface coursesService;
+	
+	@Autowired
+	private LessonsServiceInterface lessonsService;
 	
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
@@ -58,9 +63,45 @@ public class CoursesController {
 	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public ResponseEntity<CategoryDto> deleteCourse(@PathVariable(value = "id") Long id) {
+	public ResponseEntity<Void> deleteCourse(@PathVariable(value = "id") Long id) {
 		this.coursesService.deleteCourse(id);
 		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
 	}
+	
+	@GetMapping("/{courseId}/lessons")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<List<LessonDto>> listAllLessonsOfCourse(@PathVariable(value = "courseId") Long courseId) {
+		List<LessonDto> lessonsDto = this.lessonsService.listAll(courseId);
+		return new ResponseEntity<>(lessonsDto, HttpStatus.OK);
+	}
+	
+	@PostMapping("/{courseId}/lessons")
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<LessonDto> listAllLessonsOfCourse(@PathVariable(value = "courseId") Long courseId, @RequestBody CreateOrUpdateLessonDto dto) {
+		LessonDto lessonCreated = this.lessonsService.createLesson(courseId, dto);
+		return new ResponseEntity<>(lessonCreated, HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/{courseId}/lessons/{lessonId}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<LessonDto> getLessonOfCourse(@PathVariable(value = "courseId") Long courseId, @PathVariable(value = "lessonId") Long lessonId) {
+		LessonDto lessonFound = this.lessonsService.findLesson(courseId, lessonId);
+		return new ResponseEntity<>(lessonFound, HttpStatus.OK);
+	}
+	
+	@PutMapping("/{courseId}/lessons/{lessonId}")
+	@ResponseStatus(HttpStatus.OK)
+	public ResponseEntity<LessonDto> updateLesson(@PathVariable(value = "courseId") Long courseId, @PathVariable(value = "lessonId") Long lessonId, @RequestBody CreateOrUpdateLessonDto dto) {
+		LessonDto lessonUpdated = this.lessonsService.updateLesson(courseId, lessonId, dto);
+		return new ResponseEntity<>(lessonUpdated, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/{courseId}/lessons/{lessonId}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public ResponseEntity<Void> deleteLesson(@PathVariable(value = "courseId") Long courseId, @PathVariable(value = "lessonId") Long lessonId) {
+		this.lessonsService.deleteLesson(courseId, lessonId);
+		return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+	}
+	
 	
 }
