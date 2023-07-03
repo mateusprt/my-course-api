@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,6 +17,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "courses")
@@ -25,6 +30,7 @@ public class Course {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
+	@NotNull(message = "user can't be blank")
 	private User user;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -32,6 +38,7 @@ public class Course {
 	private Category category;
 	
 	@Column
+	@NotEmpty(message = "title can't be blank")
 	private String title;
 	
 	@Column
@@ -44,9 +51,11 @@ public class Course {
 	private String coverImg;
 	
 	@Column(name = "created_at")
+	@CreationTimestamp
 	private Date createdAt;
 	
 	@Column(name = "updated_at")
+	@UpdateTimestamp
 	private Date updatedAt;
 	
 	@OneToMany(mappedBy = "course")

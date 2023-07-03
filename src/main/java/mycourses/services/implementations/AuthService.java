@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import mycourses.dtos.auth.AuthDto;
 import mycourses.dtos.auth.AuthLoginDto;
 import mycourses.dtos.auth.AuthRegistrationDto;
@@ -43,7 +44,7 @@ public class AuthService implements AuthServiceInterface, UserDetailsService {
 	private JWTServiceInterface jwtService;
 	
 	private static Logger logger = Logger.getLogger(AuthService.class.toString());
-
+	
 	@Override
 	public AuthDto createUser(AuthRegistrationDto dto) {
 		logger.info("Checking if email is empty");
